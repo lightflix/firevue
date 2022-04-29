@@ -12,7 +12,7 @@ A hirevue question cracker
 3. Open the valid hirevue invite link in Firefox.
 4. Open the web development console (CTRL+SHIFT+I or CMD+ALT+I). Click on the network tab. 
 5. Reload the page so it can capture all web traffic. 
-6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder as the python script. ![Steps in web dev console](https://i.imgur.com/aIEB26S.jpg)\
+6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder as the python script. ![Steps in web dev console](https://i.imgur.com/aIEB26S.jpg)
 8. Run the python script in command prompt or Terminal using `python firevue.py`.
 The script should automatically detect the HAR file, try to do its magic and display your interview questions as shown below. Good luck!\
 ![Firevue output](https://i.imgur.com/RD1AL67.jpg)
