@@ -10,7 +10,7 @@ A hirevue question cracker
 1. Download the repository or the python file.
 2. Add the python file in its own directory (folder).
 3. Open the valid hirevue invite link in Firefox.
-4. Open the web development console (CTRL+SHIFT+I or CMD+ALT+I). Click on the network tab. 
+4. Open the web development console (`CTRL+SHIFT+I` or `CMD+ALT+I`). Click on the network tab. 
 5. Reload the page so it can capture all web traffic. 
 6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder as the python script. ![Steps in web dev console](https://i.imgur.com/aIEB26S.jpg)
 8. Run the python script in command prompt or Terminal using `python firevue.py`.
