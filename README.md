@@ -15,7 +15,7 @@ A hirevue question cracker
 6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder as the python script.
 <img src="https://i.imgur.com/aIEB26S.jpg" alt="Firevue output" width="850"/>
 
-8. Run the python script in command prompt or Terminal using `python firevue.py`.
+7. Run the python script in command prompt or Terminal using `python firevue.py`.
 The script should automatically detect the HAR file, try to do its magic and display your interview questions as shown below. Good luck!
 <img src="https://i.imgur.com/RD1AL67.jpg" alt="Firevue output" width="650"/>
 
