@@ -12,16 +12,21 @@ A hirevue question cracker
 3. Open the valid hirevue invite link in Firefox.
 4. Open the web development console (`CTRL+SHIFT+I` or `CMD+ALT+I`). Click on the network tab. 
 5. Reload the page so it can capture all web traffic. 
-6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder as the python script. ![Steps in web dev console](https://i.imgur.com/aIEB26S.jpg)
+6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder as the python script.
+<img src="https://i.imgur.com/aIEB26S.jpg" alt="Firevue output" width="850"/>
+
 8. Run the python script in command prompt or Terminal using `python firevue.py`.
-The script should automatically detect the HAR file, try to do its magic and display your interview questions as shown below. Good luck!\
-![Firevue output](https://i.imgur.com/RD1AL67.jpg)
+The script should automatically detect the HAR file, try to do its magic and display your interview questions as shown below. Good luck!
+<img src="https://i.imgur.com/RD1AL67.jpg" alt="Firevue output" width="650"/>
+
 
 ### FAQs
 
 #### 1. What does this script do and how does it work?
 This script reads web responses that were sent by Hirevue after you clicked the interview link. To my surprise, Hirevue sends all interview-related data including questions to your browser before the interview even starts. This means our browser already has the questions beforehand and displays them one at a time as you go through the interview process. The questions though were encoded with some trivial algorithm which I could easily reverse engineer. 
-![Encrypted questions as seen in Hirevue response](https://i.imgur.com/qNpi6Fl.jpg)\
+
+<img src="https://i.imgur.com/qNpi6Fl.jpg" alt="Encrypted questions as seen in Hirevue response" width="400"/>
+
 I exploited this flaw and wrote python code to analyse the response, decrypt the "encrypted" questions and reveal them in plaintext so you can take all the time you need to prepare and give your best answers.
 
 #### 2. I don't have Python installed. How do I install it?
