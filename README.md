@@ -40,3 +40,5 @@ This is unfortunate but I can count the number of Hirevue interviews I've gotten
 #### 4. Why didn't I use the python requests library to automate all of this from just the interview link?
 I didn't want to access the interview page hundreds of times just to test my code, have them think I'm sus and increase my chances of failing the interview. 
 
+#### 5. Is this safe to run?
+Yes, this script is 100% safe, runs locally and only reads the HAR file you've placed in its directory. You may be violating Hirevue's terms and conditions. I haven't read the fine print so I can't tell.
