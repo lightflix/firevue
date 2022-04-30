@@ -75,7 +75,6 @@ def harParse():
 def infoGet(content):
 
     question_list = keyCheck(content,'questions')
-
     print("\n[-] Interview Details\n")
 
     print("  - Interviewer: "+keyCheck(content,'interviewer'))
@@ -86,7 +85,6 @@ def infoGet(content):
     print("  - Invite Date: "+keyCheck(keyCheck(content, 'interviewUses')[0], 'invitedDate'))
 
     print("\n[-] Interview Questions")
-
     if question_list == "[not available]":
         print("[x] Not available")
     else:
