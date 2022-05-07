@@ -1,6 +1,7 @@
 #Simple tool to extract and decode hirevue questions from a browser HAR file
 import json
 import glob
+from typing import Type
 
 class color:
    BLUE = '\033[94m'
@@ -9,27 +10,10 @@ class color:
    BOLD = '\033[1m'
    END = '\033[0m'
 
-def keyCheck(object, key):
-
-    #the object should be a dict, not an string. It could be a string if the keyCheck() returned "[not available]" on a recursive call.
-    if type(object) == str:
-        return object
-    try:
-        value = object[key]
-    except KeyError:
-        return "[not available]"
-    else:
-        #if if value from key is an int, then we convert it to str on return.
-        if type(value) == int:
-            return str(value)
-        elif value is None:
-            return "[not available]"
-        return value
-
 def decoder(ciphertext):
 
     #if questions couldn't be extracted
-    if ciphertext == "[not available]":
+    if ciphertext == None:
         return ciphertext
 
     #convert string to character array
@@ -63,47 +47,56 @@ def harParse():
 
     #load json from the HAR file
     har_file = json.load(open(har_filename, encoding="utf-8"))
-    entries = keyCheck(keyCheck(har_file, 'log'), 'entries')
+
+    try:
+        entries = har_file.get('log', None).get('entries', None)
+    except AttributeError:
+        raise AttributeError("[x] Error: Logs or Entries not found")
 
     #iterate though each request made by the browser 
-    for entry in entries:
+    try:
+        for entry in entries:
 
-        #in each entry, get inside the response object and then into content.
-        content = keyCheck(keyCheck(entry, 'response'), 'content') 
+            #in each entry, get inside the response object and then into content.
+            content = entry.get('response', None).get('content', None) 
 
-        #questions are normally in the content object with the key "text"
-        if "text" in content and "\"questions\":" in content["text"]:
+            #questions are normally in the content object with the key "text"
+            if "text" in content and "\"questions\":" in content["text"]:
 
-            #the questions are again encoded in json to pythonise that.
-            return json.loads(content["text"])
+                #the questions are again encoded in json to pythonise that.
+                return json.loads(content["text"])
+
+    except TypeError:
+        raise TypeError("[x] Error: Entries object isn't an iterable."+" Current Type:"+str(type(entries)))
 
     #no questions found :(
     return False
 
 def infoGet(content):
 
-    question_list = keyCheck(content,'questions')
+    question_list = content.get('questions', None)
     print(color.BOLD+"\n[-] Interview Details\n"+color.END)
 
-    print(color.GREEN+"  - Interviewer: "+color.END+keyCheck(content,'interviewer'))
-    print(color.GREEN+"  - Role: "+color.END+keyCheck(content,'position'))
-    print(color.GREEN+"  - Number of questions (includes games section): "+color.END+keyCheck(content,'questionCount'))
-    print(color.GREEN+"  - Number of retries allowed: "+color.END+keyCheck(content,'retryAllowance'))
-    print(color.GREEN+"  - Interview Duration: "+color.END+keyCheck(content,'interviewDurationMinutes')+" mins")
-    print(color.GREEN+"  - Estimated Duration: "+color.END+keyCheck(content,'estimatedMinutesToComplete')+" mins")
-    print(color.GREEN+"  - Invite Date: "+color.END+keyCheck(keyCheck(content, 'interviewUses')[0], 'invitedDate'))
+    print(color.GREEN+"  - Interviewer: "+color.END+str(content.get('interviewer', None)))
+    print(color.GREEN+"  - Role: "+color.END+str(content.get('position', None)))
+    print(color.GREEN+"  - Number of questions (includes games section): "+color.END+str(content.get('questionCount', None)))
+    print(color.GREEN+"  - Number of retries allowed: "+color.END+str(content.get('retryAllowance', None)))
+    print(color.GREEN+"  - Interview Duration: "+color.END+str(content.get('interviewDurationMinutes', None))+" mins")
+    print(color.GREEN+"  - Estimated Duration: "+color.END+str(content.get('estimatedMinutesToComplete', None))+" mins")
+    print(color.GREEN+"  - Invite Date: "+color.END+str(content.get('interviewUses', None)[0].get('invitedDate', None)))
 
     print(color.BOLD+"\n[-] Interview Questions"+color.END)
-    if question_list == "[not available]":
+    if question_list == None:
         print("[x] Not available")
+
     else:
         i = 0
         for q in question_list:
-            if keyCheck(q,'type') != "mindx-assessment":
-                print(color.GREEN+"\n  - Question "+str(i+1)+": Prep Time (sec): "+keyCheck(q,'prepTimeSeconds')+", Max Answer Duration (sec): "+keyCheck(q,'maxDuration')+", Answer type: "+keyCheck(q,'type')+color.END+"\n")
+            if q.get('type', None) != "mindx-assessment":
+                print(color.GREEN+"\n  - Question "+str(i+1)+": Prep Time (sec): "+str(q.get('prepTimeSeconds', None))+", Max Answer Duration (sec): "+str(q.get('maxDuration', None))+", Answer type: "+str(q.get('type', None))+color.END+"\n")
 
                 # send each question into the decoder that converts it back to plaintext. 
-                print(decoder(keyCheck(q,'text')))
+                print(decoder(q.get('text', None)))
                 print("\n -------------------------------")
             i += 1
 
