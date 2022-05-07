@@ -8,7 +8,7 @@ A hirevue question cracker
 
 ### Steps to run this code
 1. Download the repository or the python file.
-2. Add the python file in its own directory (folder).
+2. Move the python file in a directory (folder). This could be anywhere on the system.
 3. Open the valid hirevue invite link in Firefox.
 4. Open the web development console (`CTRL+SHIFT+I` or `CMD+ALT+I`). Click on the network tab. 
 5. Reload the page so it can capture all web traffic. 
