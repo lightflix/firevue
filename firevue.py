@@ -53,7 +53,7 @@ def harParse():
     har_filename = har_file[0]
 
     #load json from the HAR file
-    har_file = json.load(open(har_filename))
+    har_file = json.load(open(har_filename, encoding="utf-8"))
 
     entries = keyCheck(keyCheck(har_file, 'log'), 'entries')
 
