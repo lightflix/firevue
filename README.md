@@ -19,6 +19,7 @@ A hirevue question cracker
 The script should automatically detect the HAR file, try to do its magic and display your interview questions as shown below. Good luck!
 <img src="https://i.imgur.com/RD1AL67.jpg" alt="Firevue output" width="650"/>
 
+8. Optional: If you want to manually decode encoded text that you find in the HAR file, you can use the '-d' option. Use 'python firevue.py -h' or 'python firevue.py --help' to check usage.
 
 ### FAQs
 

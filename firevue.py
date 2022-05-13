@@ -30,7 +30,7 @@ def decoder(ciphertext):
         result.append(second_half[i])
         result.append(first_half[i])
 
-    #if length of string is odd, it can't be evenly divided leaving out an additional character in the second half while in loop, so we add that separately in the end.
+    #if length of string is odd, it can't be evenly divided leaving out an additional character in the second half from being printed in loop, so we append that separately.
     if(len(chars) % 2 == 1):
         result.append(second_half[-1])
 
