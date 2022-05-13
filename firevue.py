@@ -1,7 +1,5 @@
 #Simple tool to extract and decode hirevue questions from a browser HAR file
-import json
-import glob
-from typing import Type
+import json, glob, argparse
 
 class color:
    BLUE = '\033[94m'
@@ -32,6 +30,10 @@ def decoder(ciphertext):
         result.append(second_half[i])
         result.append(first_half[i])
 
+    #if length of string is odd, it can't be evenly divided leaving out an additional character in the second half while in loop, so we add that separately in the end.
+    if(len(chars) % 2 == 1):
+        result.append(second_half[-1])
+
     #convert array/list back to string and return.
     return "".join(result)
 
@@ -49,7 +51,7 @@ def harParse():
     har_file = json.load(open(har_filename, encoding="utf-8"))
 
     try:
-        entries = har_file.get('log', None).get('entries', None)
+        entries = har_file.get('log').get('entries')
     except AttributeError:
         raise AttributeError("[x] Error: Logs or Entries not found")
 
@@ -58,7 +60,7 @@ def harParse():
         for entry in entries:
 
             #in each entry, get inside the response object and then into content.
-            content = entry.get('response', None).get('content', None) 
+            content = entry.get('response').get('content') 
 
             #questions are normally in the content object with the key "text"
             if "text" in content and "\"questions\":" in content["text"]:
@@ -72,35 +74,76 @@ def harParse():
     #no questions found :(
     return False
 
-def infoGet(content):
-
-    question_list = content.get('questions', None)
-    print(color.BOLD+"\n[-] Interview Details\n"+color.END)
-
-    print(color.GREEN+"  - Interviewer: "+color.END+str(content.get('interviewer', None)))
-    print(color.GREEN+"  - Role: "+color.END+str(content.get('position', None)))
-    print(color.GREEN+"  - Number of questions (includes games section): "+color.END+str(content.get('questionCount', None)))
-    print(color.GREEN+"  - Number of retries allowed: "+color.END+str(content.get('retryAllowance', None)))
-    print(color.GREEN+"  - Interview Duration: "+color.END+str(content.get('interviewDurationMinutes', None))+" mins")
-    print(color.GREEN+"  - Estimated Duration: "+color.END+str(content.get('estimatedMinutesToComplete', None))+" mins")
-    print(color.GREEN+"  - Invite Date: "+color.END+str(content.get('interviewUses', None)[0].get('invitedDate', None)))
-
-    print(color.BOLD+"\n[-] Interview Questions"+color.END)
+def getQuestions(obj):
+    question_list = obj.get('questions')
     if question_list == None:
         print("[x] Not available")
-
     else:
         i = 0
         for q in question_list:
-            if q.get('type', None) != "mindx-assessment":
-                print(color.GREEN+"\n  - Question "+str(i+1)+": Prep Time (sec): "+str(q.get('prepTimeSeconds', None))+", Max Answer Duration (sec): "+str(q.get('maxDuration', None))+", Answer type: "+str(q.get('type', None))+color.END+"\n")
+            if q.get('type') != "mindx-assessment":
+                print(color.GREEN+"\n  - Question "+str(i+1)+": Prep Time (sec): "+str(q.get('prepTimeSeconds'))+", Max Answer Duration (sec): "+str(q.get('maxDuration'))+", Answer type: "+str(q.get('type'))+color.END+"\n")
 
                 # send each question into the decoder that converts it back to plaintext. 
-                print(decoder(q.get('text', None)))
+                print(decoder(q.get('text')))
+
+                #if questions is of multiple choice type, print options.
+                if str(q.get('type')) == "multiple-selection":
+                    for option in q.get('options'):
+                        print("  [ ]",decoder(option))
+
+                if str(q.get('type')) == "multiple-choice":
+                    for option in q.get('options'):
+                        print("  [ ]",decoder(option))
+
                 print("\n -------------------------------")
             i += 1
 
+def getInfo(content):
+
+    print(color.BOLD+"\n[-] Interview Details\n"+color.END)
+
+    print(color.GREEN+"  - Interviewer: "+color.END+str(content.get('interviewer')))
+    print(color.GREEN+"  - Role: "+color.END+str(content.get('position')))
+    print(color.GREEN+"  - Number of questions (includes games section): "+color.END+str(content.get('questionCount')))
+    print(color.GREEN+"  - Number of retries allowed: "+color.END+str(content.get('retryAllowance')))
+    print(color.GREEN+"  - Interview Duration: "+color.END+str(content.get('interviewDurationMinutes'))+" mins")
+    print(color.GREEN+"  - Estimated Duration: "+color.END+str(content.get('estimatedMinutesToComplete'))+" mins")
+    print(color.GREEN+"  - Invite Date: "+color.END+str(content.get('interviewUses')[0].get('invitedDate')))
+
+    print(color.BOLD+"\n[-] Interview Questions"+color.END)
+    getQuestions(content)
+
+    print(color.BOLD+"\n[-] Interview Sections (experimental)"+color.END)
+    section_list = content.get('sections')
+    if section_list == None:
+        print("[x] Not available")
+    else:
+        print("[-] Note: Questions may be repeated under sections.")
+        i = 0
+        for s in section_list:
+            print(color.BLUE+"\n  - Section "+str(i+1)+": "+str(s.get('name'))+color.END+"\n"+str(s.get('instructions'))+"\n\n -------------------------------")
+            getQuestions(s)
+            i += 1
+
 if __name__ == "__main__":
+
+    cmdlineParse = argparse.ArgumentParser(description="This utility scans through a HAR file (JSON), automatically searches for interview data and displays them in decoded form. This is the default behaviour if no optional argument is specified. See below for manual decoding of text (for advanced users only).")
+
+    cmdlineParse.add_argument('-d','--decode', type=str, help="Specify encoded text from the HAR file to be decoded, within double quotes. This mode does not read files and only uses the decode function of this script. Warning: Decoding may be incorrect if string supplied is incomplete or there are additional characters.  \n\nExample usage: \npython firevue.py -d \"[String including \\\" as seen in file]\"", dest="encoded_string")
+    args = cmdlineParse.parse_args()
+
+    if args.encoded_string:
+        print(color.YELLOW+"\n--== Firevue: Decode Mode ==--"+color.END)
+
+        es = args.encoded_string
+
+        if(es[:1] != "\"" or es[-1:] != "\""):
+            print("[x] Error: Decoding failed. String incomplete or there are additional characters. String must begin and end with \\\" inside double quotes.\n")
+            exit(0)
+
+        print("\n"+decoder(es[1:-1])+"\n")
+        exit(0)
 
     #parse result contains the interview details and all questions.
     try:
@@ -113,8 +156,8 @@ if __name__ == "__main__":
         print("\n[x] ERROR: Incorrect HAR parsing, exiting.")
         exit()
 
-    print(color.YELLOW+"\n--== Infinite Prep Time: A Hirevue Question Cracker v1.0 ==--"+color.END)
+    print(color.YELLOW+"\n--== Firevue: A Hirevue Question Cracker v1.1 ==--"+color.END)
 
     #fetch values and print them neatly
-    infoGet(parse_result)
+    getInfo(parse_result)
     print(color.BLUE+"\n[-] Good luck! :D\n"+color.END)
