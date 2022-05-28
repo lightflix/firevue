@@ -47,13 +47,17 @@ def harParse():
     #pick the only har file in current directory. 
     har_filename = har_file[0]
 
+    print(har_file[0])
+
     #load json from the HAR file
     har_file = json.load(open(har_filename, encoding="utf-8"))
+
 
     try:
         entries = har_file.get('log').get('entries')
     except AttributeError:
         raise AttributeError("[x] Error: Logs or Entries not found")
+
 
     #iterate though each request made by the browser 
     try:
@@ -63,7 +67,7 @@ def harParse():
             content = entry.get('response').get('content') 
 
             #questions are normally in the content object with the key "text"
-            if "text" in content and "\"questions\":" in content["text"]:
+            if "text" in content and "\"questions\":" in content.get("text") and content.get("mimeType") == "application/json":
 
                 #the questions are again encoded in json to pythonise that.
                 return json.loads(content["text"])
