@@ -15,13 +15,13 @@ A hirevue question cracker
 6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder that contains the python script `firevue.py`.
 <img src="https://i.imgur.com/aIEB26S.jpg" alt="Firevue output" width="850"/>
 
-7. Run the python script in command prompt or Terminal using `python firevue.py`. Make sure the CMD prompt/Terminal is working on the directory that contains the two files. In other words, open the terminal in that folder. 
+7. Run the script in command prompt or Terminal using `python firevue.py`. Make sure the CMD prompt/Terminal is working on the directory that contains the two files. In other words, open the terminal in that folder. 
 If you're on Windows, the prompt will look something like `C:\Users\<your username>\<the folder>` and on macOS `username@hostname the_folder_name %`. If you do not see the folder name in the prompt, you have not opened it in the correct folder. 
 Here's how you do it (on both Windows/macOS): Drag the folder onto the command prompt and you will see the path of that folder pasted in there. Add `cd` before the path followed by a space. The command now should look like `cd <the path of the folder>`. Hit enter and then run the above command `python firevue.py`.
 The script should automatically detect the HAR file, try to do its magic and display your interview questions like shown below.
 <img src="https://i.imgur.com/RD1AL67.jpg" alt="Firevue output" width="650"/>
 
-8. Optional: If you want to manually decode encoded text that you find in the HAR file, you can use the `-d` option. Use `python firevue.py -h` or `python firevue.py --help` to check usage.
+8. Optional: If you want to manually decode encoded text that you find in the HAR file, you can use the `-d` option. Use `python3 firevue.py -h` or `python3 firevue.py --help` to check usage.
 
 ### FAQs
 
