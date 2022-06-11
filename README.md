@@ -9,9 +9,9 @@ A hirevue question cracker
 ### Steps to run this code
 1. Download the repository or the python file `firevue.py`.
 2. Move the python file in any new directory (folder). This could be anywhere on the system.
-3. Open the valid hirevue invite link in Firefox.
+3. Open the valid hirevue invite link in Firefox. If you don't see your name on the page, click the continue or start button and the page showing your name should be next. This will not the start the interview. But it's an important step in capturing the questions.
 4. Open the web development console (`CTRL+SHIFT+I` or `CMD+ALT+I`). Click on the network tab. 
-5. Reload the page so it can capture all web traffic. 
+5. Reload the current page so it can capture all web traffic.
 6. Right click on any entry in console and save all as HAR. Save the HAR file into the same folder that contains the python script `firevue.py`.
 <img src="https://i.imgur.com/aIEB26S.jpg" alt="Firevue output" width="850"/>
 
@@ -38,7 +38,7 @@ I exploited this flaw and wrote python code to analyse the response, decrypt the
 - Linux users: Yes
 
 #### 3. I followed the above steps and it still doesn't work.
-This is unfortunate but I can count the number of Hirevue interviews I've gotten in one hand and I've tested this code only on one of them. There are a multitude of reasons why this may not work. Each interview can be slightly different in the way they're structured in the delivery process which could mean the questions may be in a different location in the received response, or the encoding might be different, or even worse - Hirevue may have fixed this. The only way I could have made my code more compatible was if I could test this on multiple interview links from different interviewers/companies. This isn't possible at the moment unless I have volunteers.
+There are a multitude of reasons why this may not work. Each interview can be slightly different in the way they're structured in the delivery process which could mean the questions may be in a different location in the received response, or the encoding might be different, or even worse - Hirevue may have fixed this. The only way I could have made my code more compatible was if I could test this on multiple interview links from different interviewers/companies. This isn't possible at the moment unless applicants send me their interview links for testing.
 
 #### 4. Why didn't I use the python requests library to automate all of this from just the interview link?
 I didn't want to access the interview page hundreds of times just to test my code, have them think I'm sus and increase my chances of failing the interview. 
