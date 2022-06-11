@@ -115,15 +115,15 @@ def getInfo(content):
     print(color.GREEN+"  - Estimated Duration: "+color.END+str(content.get('estimatedMinutesToComplete'))+" mins")
     print(color.GREEN+"  - Invite Date: "+color.END+str(content.get('interviewUses')[0].get('invitedDate')))
 
-    print(color.BOLD+"\n[-] Interview Questions"+color.END)
+    print(color.BOLD+"\n[-] All possible Interview Questions"+color.END)
     getQuestions(content)
 
-    print(color.BOLD+"\n[-] Interview Sections (experimental)"+color.END)
+    print(color.BOLD+"\n[-] Interview Sections"+color.END)
     section_list = content.get('sections')
     if section_list == None:
         print("[x] Not available")
     else:
-        print("[-] Note: Questions may be repeated under sections.")
+        print("[-] Questions in this interview: ")
         i = 0
         for s in section_list:
             print(color.BLUE+"\n  - Section "+str(i+1)+": "+str(s.get('name'))+color.END+"\n"+str(s.get('instructions'))+"\n\n -------------------------------")
@@ -164,4 +164,8 @@ if __name__ == "__main__":
 
     #fetch values and print them neatly
     getInfo(parse_result)
+
+    # with open("parsed_result.json","w") as f:
+    #     json.dump(parse_result, f, indent=4)
+
     print(color.BLUE+"\n[-] Good luck! :D\n"+color.END)
