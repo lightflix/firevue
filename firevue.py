@@ -109,7 +109,7 @@ def getInfo(content):
 
     print(color.GREEN+"  - Interviewer: "+color.END+str(content.get('interviewer')))
     print(color.GREEN+"  - Role: "+color.END+str(content.get('position')))
-    print(color.GREEN+"  - Number of questions (includes games section): "+color.END+str(content.get('questionCount')))
+    # print(color.GREEN+"  - Total number of questions (includes games section): "+color.END+str(content.get('questionCount')))
     print(color.GREEN+"  - Number of retries allowed: "+color.END+str(content.get('retryAllowance')))
     print(color.GREEN+"  - Interview Duration: "+color.END+str(content.get('interviewDurationMinutes'))+" mins")
     print(color.GREEN+"  - Estimated Duration: "+color.END+str(content.get('estimatedMinutesToComplete'))+" mins")
