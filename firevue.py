@@ -58,7 +58,6 @@ def harParse():
     except AttributeError:
         raise AttributeError("[x] Error: Logs or Entries not found")
 
-
     #iterate though each request made by the browser 
     try:
         for entry in entries:
@@ -67,7 +66,9 @@ def harParse():
             content = entry.get('response').get('content') 
 
             #questions are normally in the content object with the key "text"
-            if "text" in content and "\"questions\":" in content.get("text") and content.get("mimeType") == "application/json":
+            if "text" in content and "\"questions\":" in content.get("text"):
+                if not content.get("mimeType") == "application/json":
+                    print("[-] Warning: json mimetype not found, attempting to fetch info")
 
                 #the questions are again encoded in json to pythonise that.
                 return json.loads(content["text"])
