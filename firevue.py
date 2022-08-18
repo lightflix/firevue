@@ -66,7 +66,7 @@ def harParse():
             content = entry.get('response').get('content') 
 
             #questions are normally in the content object with the key "text"
-            if "text" in content and "\"questions\":" in content.get("text"):
+            if "text" in content and "\"questions\":" in content.get("text") and "interviewerId" in content.get("text"):
                 if not content.get("mimeType") == "application/json":
                     print("[-] Warning: json mimetype not found, attempting to fetch info")
 
