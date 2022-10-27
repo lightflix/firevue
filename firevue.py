@@ -8,8 +8,11 @@ class color:
    BOLD = '\033[1m'
    END = '\033[0m'
 
-def decoder(ciphertext):
+def decoder_plaintext(ciphertext):
+    #uno reverse card
+    return ciphertext
 
+def decoder_original(ciphertext):
     #if questions couldn't be extracted
     if ciphertext == None:
         return ciphertext
@@ -39,12 +42,12 @@ def decoder(ciphertext):
 
 def harParse():
 
-    har_file = glob.glob('*.har') 
+    har_file = glob.glob('*.har')
 
     if len(har_file) != 1:
         raise ValueError("[x] Error: HAR file does not exist in current directory or there is more than one HAR file in current directory!")
 
-    #pick the only har file in current directory. 
+    #pick the only har file in current directory.
     har_filename = har_file[0]
 
     print(har_file[0])
@@ -52,18 +55,17 @@ def harParse():
     #load json from the HAR file
     har_file = json.load(open(har_filename, encoding="utf-8"))
 
-
     try:
         entries = har_file.get('log').get('entries')
     except AttributeError:
         raise AttributeError("[x] Error: Logs or Entries not found")
 
-    #iterate though each request made by the browser 
+    #iterate though each request made by the browser
     try:
         for entry in entries:
 
             #in each entry, get inside the response object and then into content.
-            content = entry.get('response').get('content') 
+            content = entry.get('response').get('content')
 
             #questions are normally in the content object with the key "text"
             if "text" in content and "\"questions\":" in content.get("text") and "interviewerId" in content.get("text"):
@@ -79,32 +81,34 @@ def harParse():
     #no questions found :(
     return False
 
-def getQuestions(obj):
+def getQuestions(obj, decoder_func):
+
     question_list = obj.get('questions')
     if question_list == None:
         print("[x] Not available")
     else:
+
         i = 0
         for q in question_list:
             if q.get('type') != "mindx-assessment":
                 print(color.GREEN+"\n  - Question "+str(i+1)+": Prep Time (sec): "+str(q.get('prepTimeSeconds'))+", Max Answer Duration (sec): "+str(q.get('maxDuration'))+", Answer type: "+str(q.get('type'))+color.END+"\n")
 
-                # send each question into the decoder that converts it back to plaintext. 
-                print(decoder(q.get('text')))
+                # send each question into the decoder that converts it back to plaintext.
+                print(decoder_func(q.get('text')))
 
                 #if questions is of multiple choice type, print options.
                 if str(q.get('type')) == "multiple-selection":
                     for option in q.get('options'):
-                        print("  [ ]",decoder(option))
+                        print("  [ ]",decoder_func(option))
 
                 if str(q.get('type')) == "multiple-choice":
                     for option in q.get('options'):
-                        print("  [ ]",decoder(option))
+                        print("  [ ]",decoder_func(option))
 
                 print("\n -------------------------------")
             i += 1
 
-def getInfo(content):
+def getInfo(content, decoder_func):
 
     print(color.BOLD+"\n[-] Interview Details\n"+color.END)
 
@@ -117,7 +121,7 @@ def getInfo(content):
     print(color.GREEN+"  - Invite Date: "+color.END+str(content.get('interviewUses')[0].get('invitedDate')))
 
     print(color.BOLD+"\n[-] All possible Interview Questions"+color.END)
-    getQuestions(content)
+    getQuestions(content, decoder_func)
 
     print(color.BOLD+"\n[-] Interview Sections"+color.END)
     section_list = content.get('sections')
@@ -128,7 +132,7 @@ def getInfo(content):
         i = 0
         for s in section_list:
             print(color.BLUE+"\n  - Section "+str(i+1)+": "+str(s.get('name'))+color.END+"\n"+str(s.get('instructions'))+"\n\n -------------------------------")
-            getQuestions(s)
+            getQuestions(s, decoder_func)
             i += 1
 
 if __name__ == "__main__":
@@ -147,7 +151,7 @@ if __name__ == "__main__":
             print("[x] Error: Decoding failed. String incomplete or there are additional characters. String must begin and end with \\\" inside double quotes.\n")
             exit(0)
 
-        print("\n"+decoder(es[1:-1])+"\n")
+        print("\n"+decoder_original(es[1:-1])+"\n")
         exit(0)
 
     #parse result contains the interview details and all questions.
@@ -164,7 +168,15 @@ if __name__ == "__main__":
     print(color.YELLOW+"\n--== Firevue: A Hirevue Question Cracker v1.1 ==--"+color.END)
 
     #fetch values and print them neatly
-    getInfo(parse_result)
+    decoders = [decoder_plaintext, decoder_original]
+    for decoder in decoders:
+        getInfo(parse_result, decoder)
+        print("\n\n*** If the questions are readable, enter \"Y\" to finish, otherwise enter \"N\" to try again. ***\n")
+        response = input().lower()
+        if response == "y":
+            break
+
+    # getInfo(parse_result)
 
     # with open("parsed_result.json","w") as f:
     #     json.dump(parse_result, f, indent=4)
