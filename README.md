@@ -16,9 +16,9 @@ A hirevue question cracker
 <img src="https://i.imgur.com/aIEB26S.jpg" alt="Firevue output" width="850"/>
 
 7. On Windows, press (Windows key + R) and type `cmd`, then hit enter. This will open a black command prompt window. For Linux/MacOS, open the terminal.
-8. On Windows/macOS, drag the folder onto the command prompt window you just opened. You'll see the name of that folder appear.
-9. Move to the start of the line you just added. Type `cd`, followed by a space. The command now should look like `cd C:\the\path\to\the\folder`. Hit enter.
-10. Type `python3 firevue.py`, then hit enter.
+8. In the terminal, type `cd`, followed by a space. 
+9. On Windows/macOS, drag the folder onto the command prompt window you just opened. You'll see the name of that folder appear. The command now should look like `cd C:\the\path\to\the\folder`. Hit enter.
+10. Type `python3 firevue.py`, then hit enter. If "python3" is not a recognized command then either 1) run the command "python" or 2) go to where python is installed and either 1) rename "python.exe" to "python3.exe" or 2) copy and paste python.exe into the same directory and rename the copy "python3.exe"
 11. The script should automatically detect the HAR file and try to do its magic. Follow the instructions on-screen. Eventually it will display your interview questions like shown below:
 <img src="https://i.imgur.com/RD1AL67.jpg" alt="Firevue output" width="650"/>
 
