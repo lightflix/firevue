@@ -24,6 +24,9 @@ A hirevue question cracker
 
 12. Optional: If you want to manually decode encoded text that you find in the HAR file, you can use the `-d` option. Use `python3 firevue.py -h` or `python3 firevue.py --help` to check usage.
 
+> :warning:NOTE:
+> When this script was created Hirevue included the assessment questions within the HAR file (located within the "text" field of the HTTP "response" object): the majority of the HireVue assessments no longer include the questions as text (encrypted).
+
 ### FAQs
 
 #### 1. What does this script do and how does it work?
