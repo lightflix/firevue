@@ -46,3 +46,20 @@ I didn't want to access the interview page hundreds of times just to test my cod
 
 #### 5. Is this safe to run?
 Yes, this script is 100% safe, runs locally and only reads the HAR file you've placed in its directory. You may be violating Hirevue's terms and conditions. I haven't read the fine print so I can't tell.
+
+#### 6. Is there anything that could be done since HireVue has modified the output of the HAR file?
+Absolutely, yes there is. If you are using the **_Firefox Browser_** (Chrome produce the files however it did not provide the image previews) and have entered **_Developer Mode > Network (Tab)_** follow the following steps:
+1. Navigate to the screen that says "_Aptitude Assessment: The assessment measures your aptitude in areas such as critical thinking and problem-solving. This helps you demonstrate your potential to employers, beyond what appears in your resume. Answer each question carefully, but do not spend too much time on any one question. If you can't determine the answer to a question you should select an answer and move on. You will receive one point for each correct answer. No points are deducted for incorrect answers. The questions become more difficult as the assessment progresses._" **_DO NOT HIT THE BUTTON TO START THE ASSESSMENT!!! Follow the next few steps first._**
+
+2. Examine the files under the "Network" tab. By hovering over certain files (i.e. .png) the spatial questions that include images as the questions in the actual assessment are visible.
+   - Consider studying what is provided prior to starting the assessment. One method is to copy the URL (right-click > Copy > Copy URL) of the questions/image and paste it into Google Lens to search the images discovered for pre-discovered answers or simply examine them and figure out the answer on your own. 
+     -  [Brainly](https://brainly.com/) (available via both web browser as well as app) provides a lot of answers to the exact same as well as similar questions which assist in finding the pattern of the sequence. Searching for answers via AI is also a viable option if you are not wanting to waste too much of your own brain juice.
+     - Another great source for information as well as a few answers is [here](https://av-krishnan.medium.com/) which includes both actual questions as well as sample questions with explanations as to how to solve similar problems.
+   - The files where there are four images and no question are typically asking which image does not belong (for example if three shapes have a square in the center and one shape has a circle in the center then the circle centered shape would be the correct answer because it is different than the other three).
+   - Questions with a chart, good luck: they typically ask “what is the difference between the percentage of ‘A’ at this time and ‘B’ at this time,” however you will not know which data sets are in question until live in the assessment.
+       - A word of advice is knowing how to calculate percentages prior to the assessment starts and plug in the numbers: 
+
+_percentageDifference = (((highestNumber - lowestNumber) / lowestNumber) *100)_
+
+3. Once you are confident start the assessment: by preparing in advance and jotting down the answers available this allows you to answer those questions sooner providing more time on the questions that are hidden from the HAR file. 
+
