@@ -1,6 +1,8 @@
 # Firevue
 A hirevue question cracker
 
+# Update (15-11-2023): Many users reported that this script does not work anymore. Hirevue may have likely patched this.
+
 ### Requirements
 1. Python 3
 2. Mozilla Firefox (Google Chrome might work but I haven't tested it).
